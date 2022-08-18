@@ -24,7 +24,7 @@ public class Cafe extends BaseTimeEntity {
     private String location; // 위치
 
     @Type(type="json")
-    private Map<String,String> openingHours = new HashMap<>(); // 영업시간 <오픈시간, 마감시간>
+    private Map<String,String> openingHours = new HashMap<>(); // 영업시간 <요일, 오픈시간-마감시간>
 
     private String latitude; // 위도
     private String longitude; // 경도
@@ -35,12 +35,8 @@ public class Cafe extends BaseTimeEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cafe")
     private List<Photo> photos = new ArrayList<Photo>(); // 카페 사진들
 
-    /**
-     * 생성자
-     */
-    // Photo를 제외한 생성자
     @Builder
-    public Cafe(String cafeName, String location, String openTime, String closeTime,
+    public Cafe(String cafeName, String location,
                 String latitude, String longitude, String plugStatus) {
 
         this.cafeName = cafeName;
@@ -48,27 +44,27 @@ public class Cafe extends BaseTimeEntity {
         this.latitude = latitude;
         this.longitude = longitude;
         this.plugStatus = plugStatus;
-
-        this.openingHours.put(openTime, closeTime);
     }
 
-    // Photo를 추가하는 생성자
-    public void addPhoto() { }
+    public void addPhoto(Photo photo) {
+        photos.add(photo);
+    }
+    public void addOpeningHours(String dayOfTheWeek, String openingHours) {
+        this.openingHours.put(dayOfTheWeek, openingHours);
+    }
 
     /**
      * 핵심 비지니스 로직
      */
     @Builder
-    public void updateCafe(String cafeName, String location, String openTime, String closeTime,
-                String latitude, String longitude, String plugStatus) {
+    public void updateCafe(String cafeName, String location,
+                           String latitude, String longitude, String plugStatus) {
 
         this.cafeName = cafeName;
         this.location = location;
         this.latitude = latitude;
         this.longitude = longitude;
         this.plugStatus = plugStatus;
-
-        this.openingHours.put(openTime, closeTime);
     }
 
     public void updateCafeName(String cafeName) {
@@ -88,8 +84,12 @@ public class Cafe extends BaseTimeEntity {
         this.plugStatus = plugStatus;
     }
 
-    public void updateOpeningHours(String openTime, String closeTime) {
-        this.openingHours.put(openTime, closeTime);
+    public void updateOpeningHours(String dayOfTheWeek, String openingHours) {
+        this.openingHours.put(dayOfTheWeek, openingHours);
+    }
+
+    public void updatePhoto(Photo photo) {
+        photos.add(photo);
     }
 
 }
