@@ -24,3 +24,14 @@ spring:
   mvc:
     pathmatch:
       matching-strategy=ant_path_matcher:
+
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE}
+      max-request-size: ${MAX_REQUEST_SIZE}
+      enabled: true
+
+accessKey: ${ACCESS_KEY}
+secretKey: ${SECRET_KEY}
+bucketName: ${BUCKET_NAME}
+region: ${REGION}
