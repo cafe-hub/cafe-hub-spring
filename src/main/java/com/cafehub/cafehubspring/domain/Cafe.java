@@ -56,16 +56,6 @@ public class Cafe extends BaseTimeEntity {
     /**
      * 핵심 비지니스 로직
      */
-    @Builder
-    public void updateCafe(String cafeName, String location,
-                           String latitude, String longitude, String plugStatus) {
-
-        this.cafeName = cafeName;
-        this.location = location;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.plugStatus = plugStatus;
-    }
 
     public void updateCafeName(String cafeName) {
         this.cafeName = cafeName;
