@@ -6,10 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Entity
@@ -24,6 +21,14 @@ public class Photo extends BaseTimeEntity {
     private String fileName;
 
     private String url;
+
+    @ManyToOne
+    @JoinColumn(name = "cafe_cafe_id")
+    private Cafe cafe;
+
+    public void setCafe(Cafe cafe) {
+        this.cafe = cafe;
+    }
 
     @Builder
     public Photo(String fileName, String url) {
