@@ -44,5 +44,5 @@ Play Store:
 
 | 사진 | 이름 | 깃허브 |
 | :-: | :-: | :-: |
-| ![gs97ahn](./doc/img/gs97ahn.png){width=150 height=150} | 안검성 | [gs97ahn](github.com/gs97ahn) |
-| ![nahyeon99](./doc/img/nahyeon99.png){width=150 height=150} | 김나현 | [nahyeon99](github.com/nahyeon99) |
+| <img src="./doc/img/gs97ahn.png" alt="gs97ahn" width=150 height=150> | 안검성 | [gs97ahn](github.com/gs97ahn) |
+| {width=150 height=150}<img src="./doc/img/nahyeon99.png" alt="gs97ahn" width=150 height=150> | 김나현 | [nahyeon99](github.com/nahyeon99) |
