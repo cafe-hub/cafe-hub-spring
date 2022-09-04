@@ -1,12 +1,18 @@
 package com.cafehub.cafehubspring.service;
 
+import com.cafehub.cafehubspring.domain.Cafe;
+import com.cafehub.cafehubspring.domain.Photo;
+import com.cafehub.cafehubspring.dto.CafeSaveRequestDto;
 import com.cafehub.cafehubspring.exception.http.InternalServerErrorException;
+import com.cafehub.cafehubspring.repository.CafeRepository;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,14 +20,134 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.Map;
 
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CafeService {
 
+    private CafeRepository cafeRepository;
+    private PhotoService photoService;
+
     @Value("${apiKey}")
     private String apiKey;
+
+    /**
+     * 카페 단건 조회
+     */
+    public Cafe findById(Long cafeId) {
+        log.info("IN PROGRESS | Cafe 단건 조회 At " + LocalDateTime.now() +
+                " | 카페 아이디 = " + cafeId);
+
+        log.info("COMPLETE | Cafe 단건 조회 At " + LocalDateTime.now() + " | 카페 이름 = " + cafeRepository.findById(cafeId).get().getCafeName());
+        return cafeRepository.findById(cafeId).get();
+    }
+
+    /**
+     * 카페 저장
+     */
+    @Transactional
+    public Long save(String cafeName, String location, String latitude, String longitude, String plugStatus) {
+
+        log.info("IN PROGRESS | Cafe 저장 At " + LocalDateTime.now() +
+                " | 카페 이름 = " + cafeName);
+
+        try {
+            Cafe cafe = Cafe.builder()
+                    .cafeName(cafeName)
+                    .location(location)
+                    .latitude(latitude)
+                    .longitude(longitude)
+                    .plugStatus(plugStatus)
+                    .build();
+
+            cafeRepository.save(cafe);
+            log.info("COMPLETE | Cafe 저장 At " + LocalDateTime.now() + " | 카페 이름 = " + cafe.getCafeName()
+                    + " | 카페 아이디 = " + cafe.getId());
+            return cafe.getId();
+        } catch(Exception e) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    @Transactional
+    public Long savePhoto(Long cafeId, Photo photo, MultipartFile file) {
+
+        log.info("IN PROGRESS | Cafe 포토 저장 At " + LocalDateTime.now() +
+                " | 카페 이름 = " + findById(cafeId) + " | 파일명 = " + photo.getFileName());
+        Cafe cafe = findById(cafeId);
+        Photo savedPhoto = photoService.save(cafe.getCafeName(), photo.getFileName(), file);
+        cafe.addPhoto(savedPhoto);
+        cafeRepository.save(cafe);
+        log.info("COMPLETE | Cafe 이미지 저장 At " + LocalDateTime.now() + " | 카페 이름 = " + cafe.getCafeName()
+                + " | 카페 포토 파일 이름 = " + savedPhoto.getFileName());
+        return cafe.getId();
+    }
+
+    @Transactional
+    public Long saveOpeningHours(Long cafeId, String dayOfTheWeek, String openingHours) {
+        log.info("IN PROGRESS | Cafe 영업시간 저장 At " + LocalDateTime.now() +
+                " | 카페 이름 = " + findById(cafeId));
+        Cafe cafe = cafeRepository.findById(cafeId).get();
+        cafe.addOpeningHours(dayOfTheWeek, openingHours);
+        cafeRepository.save(cafe);
+        log.info("COMPLETE | Cafe 영업시간 저장 At " + LocalDateTime.now() + " | 카페 이름 = " + cafe.getCafeName());
+        return cafe.getId();
+    }
+
+    /**
+     * 카페 업데이트
+     */
+    @Transactional
+    public void updateCafe(Long cafeId, CafeSaveRequestDto cafeSaveRequestDto) {
+        log.info("IN PROGRESS | Cafe 업데이트 At " + LocalDateTime.now() +
+                " | 카페 이름 = " + findById(cafeId).getCafeName());
+        Cafe cafe = cafeRepository.findById(cafeId).get();
+
+        Float[] coordinate = coordinateFromAddress(cafe.getLocation());
+
+        String longitude = coordinate[0].toString();
+        String latitude = coordinate[1].toString();
+
+        cafe.updateLatitude(latitude);
+        cafe.updateLongitude(longitude);
+        cafe.updateCafeName(cafeSaveRequestDto.getCafeName());
+        cafe.updatePlugStatus(cafeSaveRequestDto.getPlugStatus());
+        cafe.updateLocation(cafeSaveRequestDto.getLocation());
+
+        log.info("COMPLETE | Cafe 업데이트 At " + LocalDateTime.now() + " | 카페 이름 = " + cafe.getCafeName());
+    }
+
+    @Transactional
+    public void updateCafeDeletePhoto(Long cafeId, String fileName) {
+        log.info("IN PROGRESS | Cafe 포토 삭제 At " + LocalDateTime.now() +
+                " | 카페 이름 = " + findById(cafeId).getCafeName());
+        Cafe cafe = cafeRepository.findById(cafeId).get();
+        photoService.delete(cafe.getCafeName(), fileName);
+        log.info("COMPLETE | Cafe 포토 삭제 At " + LocalDateTime.now());
+    }
+
+    @Transactional
+    public void updateCafeDeleteOpeningHours(Long cafeId, String dayOfTheWeek, String openingHour) {
+
+        Cafe cafe = cafeRepository.findById(cafeId).get();
+        Map<String, String> openingHours = cafe.getOpeningHours();
+        openingHours.put(dayOfTheWeek, openingHour);
+    }
+
+    /**
+     * 카페 삭제
+     */
+    @Transactional
+    public void deleteCafe(Long cafeId) {
+        log.info("IN PROGRESS | Cafe 삭제 At " + LocalDateTime.now() +
+                " | 카페 이름 = " + findById(cafeId));
+        cafeRepository.delete(findById(cafeId));
+        log.info("COMPLETE | Cafe 삭제 At " + LocalDateTime.now() + " | 카페 아이디 = " + cafeId);
+    }
 
     /**
      * 주소로부터 좌표값 |

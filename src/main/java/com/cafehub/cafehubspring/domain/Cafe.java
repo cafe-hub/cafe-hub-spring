@@ -23,7 +23,8 @@ public class Cafe extends BaseTimeEntity {
     private String cafeName; // 카페이름
     private String location; // 위치
 
-    @Type(type="json")
+    @Column
+    @ElementCollection(targetClass=String.class)
     private Map<String,String> openingHours = new HashMap<>(); // 영업시간 <요일, 오픈시간-마감시간>
 
     private String latitude; // 위도
@@ -31,7 +32,6 @@ public class Cafe extends BaseTimeEntity {
 
     private String plugStatus; // 콘센트 상태 [null, many]
 
-    @Type(type="json")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cafe")
     private List<Photo> photos = new ArrayList<Photo>(); // 카페 사진들
 
@@ -65,8 +65,11 @@ public class Cafe extends BaseTimeEntity {
         this.location = location;
     }
 
-    public void updateLatitudeLongitude(String latitude, String longitude) {
+    public void updateLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public void updateLongitude(String longitude) {
         this.longitude = longitude;
     }
 
