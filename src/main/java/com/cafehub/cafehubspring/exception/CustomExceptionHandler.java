@@ -1,6 +1,7 @@
 package com.cafehub.cafehubspring.exception;
 
 import com.cafehub.cafehubspring.exception.http.InternalServerErrorException;
+import com.cafehub.cafehubspring.exception.http.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,27 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                         "null" : exception.getFieldError().getRejectedValue().toString()));
 
         return ResponseEntity.status(status).body(
+                DefaultExceptionResponseDto.builder()
+                        .responseCode(responseCode)
+                        .responseMessage(responseMessage)
+                        .build()
+        );
+    }
+
+    /**
+     * 404 Not Found |
+     * 요청받은 리소스를 찾을 수 없습니다.
+     */
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ResponseEntity<Object> handleNotFoundException(NotFoundException exception) {
+        String responseMessage = exception.getMessage();
+        String responseCode = "NOT_FOUND";
+        LocalDateTime timestamp = LocalDateTime.now();
+
+        log.error("ERROR | " + responseMessage + " At " + timestamp + " | " + exception);
+
+        return ResponseEntity.status(404).body(
                 DefaultExceptionResponseDto.builder()
                         .responseCode(responseCode)
                         .responseMessage(responseMessage)
