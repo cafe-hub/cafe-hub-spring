@@ -49,9 +49,9 @@ public class CafeService {
     /**
      * 카페 여러 건 조회
      */
-    public List<Cafe> findCafes(Float topLeftLongitude, Float topLeftLatitude, Float bottomRightLongitude, Float bottomRightLatitude) {
+    public List<Cafe> findCafesByCoordinates(Float topLeftLongitude, Float topLeftLatitude, Float bottomRightLongitude, Float bottomRightLatitude) {
 
-        List<Cafe> findCafes = cafeRepository.findCafes(topLeftLatitude, bottomRightLatitude, topLeftLongitude, bottomRightLongitude);
+        List<Cafe> findCafes = cafeRepository.findCafesByCoordinates(topLeftLatitude, bottomRightLatitude, topLeftLongitude, bottomRightLongitude);
 
         return findCafes;
     }
