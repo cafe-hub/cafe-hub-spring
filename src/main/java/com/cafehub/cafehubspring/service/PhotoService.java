@@ -37,11 +37,10 @@ public class PhotoService {
      * 사진을 S3에 저장한 후에 디비에 관련 정보를 입력한다. 저장 중 오류가 발생하면 에러()를 던진다.
      */
     @Transactional
-    public Photo save(String cafeName, String cafeId, String fileName, MultipartFile file) {
+    public Photo save(String cafeName, String fileName, MultipartFile file) {
         log.info("IN PROGRESS | Photo 저장 At " + LocalDateTime.now() +
-                " | 카페 이름 = " + cafeName + " | 카페 아이디 = " + cafeId + " | 파일명 = " + fileName);
-        String folderName = cafeName + "-" + cafeId;
-        String url = insertFileToS3(folderName, fileName, file);
+                " | 카페 이름 = " + cafeName + " | 파일명 = " + fileName);
+        String url = insertFileToS3(cafeName, fileName, file);
         try {
             Photo photo = Photo.builder().fileName(fileName).url(url).build();
             Photo savedPhoto = photoRepository.save(photo);
@@ -56,10 +55,10 @@ public class PhotoService {
      * S3에 파일 저장 |
      * 파일을 전환하고 특정 파일 관련된 폴더에 파일을 저장하고 URL을 반환한다. 파일 전환시 오류가 발생하면 에러()를 던진다.
      */
-    private String insertFileToS3(String folderName, String fileName, MultipartFile file) {
+    private String insertFileToS3(String cafeName, String fileName, MultipartFile file) {
         try {
             File convertedFile = convertMultiPartToFile(file);
-            String uploadingFileName = folderName + "/" + fileName;
+            String uploadingFileName = cafeName + "/" + fileName;
             amazonS3Client.putObject(new PutObjectRequest(bucketName, uploadingFileName, convertedFile)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
             return amazonS3Client.getUrl(bucketName, fileName).toString();
