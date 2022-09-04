@@ -1,6 +1,6 @@
 # Cafehub(카페허브)
 
-<div style="align-content: center">
+<div align="center">
 
 ![cafehub-logo](doc/img/cafehub-logo.png)
 
