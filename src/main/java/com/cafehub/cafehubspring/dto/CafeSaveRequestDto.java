@@ -44,7 +44,7 @@ public class CafeSaveRequestDto {
     @ApiModelProperty(position = 5, dataType = "List<MultiPartFile>", value = "사진")
     private List<MultipartFile> files;
 
-    public Cafe toEntity(String latitude, String longitude) {
+    public Cafe toEntity(Float latitude, Float longitude) {
         return Cafe.builder()
                 .cafeName(cafeName)
                 .location(location)
