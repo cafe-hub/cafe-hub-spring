@@ -27,8 +27,8 @@ public class Cafe extends BaseTimeEntity {
     @ElementCollection(targetClass=String.class)
     private Map<String,String> openingHours = new HashMap<>(); // 영업시간 <요일, 오픈시간-마감시간>
 
-    private String latitude; // 위도
-    private String longitude; // 경도
+    private Float latitude; // 위도
+    private Float longitude; // 경도
 
     private String plugStatus; // 콘센트 상태 [null, many]
 
@@ -37,7 +37,7 @@ public class Cafe extends BaseTimeEntity {
 
     @Builder
     public Cafe(String cafeName, String location,
-                String latitude, String longitude, String plugStatus) {
+                Float latitude, Float longitude, String plugStatus) {
 
         this.cafeName = cafeName;
         this.location = location;
@@ -65,11 +65,11 @@ public class Cafe extends BaseTimeEntity {
         this.location = location;
     }
 
-    public void updateLatitude(String latitude) {
+    public void updateLatitude(Float latitude) {
         this.latitude = latitude;
     }
 
-    public void updateLongitude(String longitude) {
+    public void updateLongitude(Float longitude) {
         this.longitude = longitude;
     }
 

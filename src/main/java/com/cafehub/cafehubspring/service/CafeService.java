@@ -10,6 +10,7 @@ import kong.unirest.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,8 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -44,10 +47,20 @@ public class CafeService {
     }
 
     /**
+     * 카페 여러 건 조회
+     */
+    public List<Cafe> findCafes(Float topLeftLongitude, Float topLeftLatitude, Float bottomRightLongitude, Float bottomRightLatitude) {
+
+        List<Cafe> findCafes = cafeRepository.findCafes(topLeftLatitude, bottomRightLatitude, topLeftLongitude, bottomRightLongitude);
+
+        return findCafes;
+    }
+
+    /**
      * 카페 저장
      */
     @Transactional
-    public Long save(String cafeName, String location, String latitude, String longitude, String plugStatus) {
+    public Long save(String cafeName, String location, Float latitude, Float longitude, String plugStatus) {
 
         log.info("IN PROGRESS | Cafe 저장 At " + LocalDateTime.now() +
                 " | 카페 이름 = " + cafeName);
@@ -106,11 +119,8 @@ public class CafeService {
 
         Float[] coordinate = coordinateFromAddress(cafe.getLocation());
 
-        String longitude = coordinate[0].toString();
-        String latitude = coordinate[1].toString();
-
-        cafe.updateLatitude(latitude);
-        cafe.updateLongitude(longitude);
+        cafe.updateLongitude(coordinate[0]);
+        cafe.updateLatitude(coordinate[1]);
         cafe.updateCafeName(cafeSaveRequestDto.getCafeName());
         cafe.updatePlugStatus(cafeSaveRequestDto.getPlugStatus());
         cafe.updateLocation(cafeSaveRequestDto.getLocation());
