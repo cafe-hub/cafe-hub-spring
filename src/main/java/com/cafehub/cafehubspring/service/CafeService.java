@@ -124,7 +124,7 @@ public class CafeService {
                 " | 카페 이름 = " + findById(cafeId).getCafeName());
         Cafe cafe = cafeRepository.findById(cafeId).get();
         // TODO: delete 수정
-        photoService.delete(cafe.getCafeName(), fileName);
+        photoService.delete(cafe.getCafeName(), cafeId, fileName);
         log.info("COMPLETE | Cafe 포토 삭제 At " + LocalDateTime.now());
     }
 
