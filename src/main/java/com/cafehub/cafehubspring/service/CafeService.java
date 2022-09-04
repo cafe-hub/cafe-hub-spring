@@ -39,10 +39,7 @@ public class CafeService {
      * 카페 단건 조회
      */
     public Cafe findById(Long cafeId) {
-        log.info("IN PROGRESS | Cafe 단건 조회 At " + LocalDateTime.now() +
-                " | 카페 아이디 = " + cafeId);
 
-        log.info("COMPLETE | Cafe 단건 조회 At " + LocalDateTime.now() + " | 카페 이름 = " + cafeRepository.findById(cafeId).get().getCafeName());
         return cafeRepository.findById(cafeId).get();
     }
 
@@ -79,7 +76,7 @@ public class CafeService {
         log.info("IN PROGRESS | Cafe 포토 저장 At " + LocalDateTime.now() +
                 " | 카페 이름 = " + findById(cafeId) + " | 파일명 = " + photo.getFileName());
         Cafe cafe = findById(cafeId);
-        Photo savedPhoto = photoService.save(cafe.getCafeName(), photo.getFileName(), file);
+        Photo savedPhoto = photoService.save(cafe.getCafeName(), cafe.getId(), photo.getFileName(), file);
         cafe.addPhoto(savedPhoto);
         cafeRepository.save(cafe);
         log.info("COMPLETE | Cafe 이미지 저장 At " + LocalDateTime.now() + " | 카페 이름 = " + cafe.getCafeName()
@@ -126,6 +123,7 @@ public class CafeService {
         log.info("IN PROGRESS | Cafe 포토 삭제 At " + LocalDateTime.now() +
                 " | 카페 이름 = " + findById(cafeId).getCafeName());
         Cafe cafe = cafeRepository.findById(cafeId).get();
+        // TODO: delete 수정
         photoService.delete(cafe.getCafeName(), fileName);
         log.info("COMPLETE | Cafe 포토 삭제 At " + LocalDateTime.now());
     }
