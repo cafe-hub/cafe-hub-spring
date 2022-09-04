@@ -41,7 +41,7 @@ Play Store:
 - [Github Issue & Pull Request](https://velog.io/@junh0328/%ED%98%91%EC%97%85%EC%9D%84-%EC%9C%84%ED%95%9C-%EA%B9%83%ED%97%88%EB%B8%8C-%EC%9D%B4%EC%8A%88-%EC%9E%91%EC%84%B1%ED%95%98%EA%B8%B0)
 
 ## Contributors
-<div style="align-content: center">
+<div align="center">
 
 | 사진 | 이름 | 깃허브 |
 | :-: | :-: | :-: |
