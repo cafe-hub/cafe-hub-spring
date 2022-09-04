@@ -37,10 +37,10 @@ public class PhotoService {
      * 사진을 S3에 저장한 후에 디비에 관련 정보를 입력한다. 저장 중 오류가 발생하면 에러()를 던진다.
      */
     @Transactional
-    public Photo save(String cafeName, String cafeId, String fileName, MultipartFile file) {
+    public Photo save(String cafeName, Long cafeId, String fileName, MultipartFile file) {
         log.info("IN PROGRESS | Photo 저장 At " + LocalDateTime.now() +
-                " | 카페 이름 = " + cafeName + " | 카페 아이디 = " + cafeId + " | 파일명 = " + fileName);
-        String folderName = cafeName + "-" + cafeId;
+                " | 카페 이름 = " + cafeName + " | 카페 아이디 = " + cafeId.toString() + " | 파일명 = " + fileName);
+        String folderName = cafeName + "-" + cafeId.toString();
         String url = insertFileToS3(folderName, fileName, file);
         try {
             Photo photo = Photo.builder().fileName(fileName).url(url).build();
