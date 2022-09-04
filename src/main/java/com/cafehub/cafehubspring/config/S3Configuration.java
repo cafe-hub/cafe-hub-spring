@@ -13,13 +13,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class S3Configuration {
 
-    @Value("${accessKey}")
+    @Value("${s3.accessKey}")
     private String accessKey;
 
-    @Value("${secretKey}")
+    @Value("${s3.secretKey}")
     private String secretKey;
 
-    @Value("${region}")
+    @Value("${s3.region}")
     private String region;
 
     @Bean

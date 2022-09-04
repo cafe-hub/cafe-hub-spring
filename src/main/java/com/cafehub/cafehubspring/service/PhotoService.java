@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.cafehub.cafehubspring.domain.Photo;
+import com.cafehub.cafehubspring.exception.http.InternalServerErrorException;
 import com.cafehub.cafehubspring.repository.PhotoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class PhotoService {
 
-    @Value("${bucketName}")
+    @Value("${s3.bucketName}")
     private String bucketName;
 
     private final PhotoRepository photoRepository;
@@ -47,8 +48,8 @@ public class PhotoService {
             Photo savedPhoto = photoRepository.save(photo);
             log.info("COMPLETE | Photo 저장 At " + LocalDateTime.now() + " | " + savedPhoto);
             return savedPhoto;
-        } catch (Exception e) { // TODO: 에러 핸들링 추후에 변경 필요
-            throw new IllegalStateException();
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Photo save 중 에러 발생", e);
         }
     }
 
@@ -63,8 +64,8 @@ public class PhotoService {
             amazonS3Client.putObject(new PutObjectRequest(bucketName, uploadingFileName, convertedFile)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
             return amazonS3Client.getUrl(bucketName, fileName).toString();
-        } catch (IOException e) { // TODO: 에러 핸들링 추후에 변경 필요
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new InternalServerErrorException("Photo insertFileToS3 중 에러 발생", e);
         }
     }
 

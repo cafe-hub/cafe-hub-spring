@@ -1,3 +1,4 @@
+# MySQL
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -31,9 +32,11 @@ spring:
       max-request-size: ${MAX_REQUEST_SIZE}
       enabled: true
 
-accessKey: ${ACCESS_KEY}
-secretKey: ${SECRET_KEY}
-bucketName: ${BUCKET_NAME}
-region: ${REGION}
+# S3
+s3.accessKey: ${S3_ACCESS_KEY}
+s3.secretKey: ${S3_SECRET_KEY}
+s3.bucketName: ${S3_BUCKET_NAME}
+s3.region: ${S3_REGION}
 
-apiKey: ${API_KEY}
+# Kakao
+kakao.apiKey: ${KAKAO_API_KEY}

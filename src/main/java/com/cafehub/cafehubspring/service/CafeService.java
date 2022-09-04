@@ -32,7 +32,7 @@ public class CafeService {
     private CafeRepository cafeRepository;
     private PhotoService photoService;
 
-    @Value("${apiKey}")
+    @Value("${kakao.apiKey}")
     private String apiKey;
 
     /**
