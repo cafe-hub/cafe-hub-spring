@@ -1,6 +1,7 @@
 package com.cafehub.cafehubspring.repository;
 
 import com.cafehub.cafehubspring.domain.Cafe;
+import com.cafehub.cafehubspring.domain.OpeningHours;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,4 +20,9 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
                          @Param("bottomRightLatitude") Float bottomRightLatitude,
                          @Param("topLeftLongitude") Float topLeftLongitude,
                          @Param("bottomRightLongitude") Float bottomRightLongitude);
+
+    @Query(value = "SELECT c.openingHours" +
+            "FROM Cafe c",
+            nativeQuery = true)
+    OpeningHours findOpeningHoursByCafe();
 }

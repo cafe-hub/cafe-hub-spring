@@ -1,6 +1,7 @@
 package com.cafehub.cafehubspring.service;
 
 import com.cafehub.cafehubspring.domain.Cafe;
+import com.cafehub.cafehubspring.domain.OpeningHours;
 import com.cafehub.cafehubspring.domain.Photo;
 import com.cafehub.cafehubspring.dto.CafeSaveRequestDto;
 import com.cafehub.cafehubspring.exception.http.InternalServerErrorException;
@@ -22,7 +23,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -32,6 +32,7 @@ public class CafeService {
 
     private CafeRepository cafeRepository;
     private PhotoService photoService;
+    private OpeningHoursService openingHoursService;
 
     @Value("${kakao.apiKey}")
     private String apiKey;
@@ -39,18 +40,16 @@ public class CafeService {
     /**
      * 카페 단건 조회
      */
-    public Cafe findById(Long cafeId) {
-
+    public Cafe findOneById(Long cafeId) {
         return cafeRepository.findById(cafeId).get();
     }
 
     /**
      * 카페 여러 건 조회
      */
-    public List<Cafe> findCafesByCoordinates(Float topLeftLongitude, Float topLeftLatitude, Float bottomRightLongitude, Float bottomRightLatitude) {
+    public List<Cafe> findManyByCoordinates(Float topLeftLongitude, Float topLeftLatitude, Float bottomRightLongitude, Float bottomRightLatitude) {
 
         List<Cafe> findCafes = cafeRepository.findCafesByCoordinates(topLeftLatitude, bottomRightLatitude, topLeftLongitude, bottomRightLongitude);
-
         return findCafes;
     }
 
@@ -85,8 +84,8 @@ public class CafeService {
     public Long savePhoto(Long cafeId, Photo photo, MultipartFile file) {
 
         log.info("IN PROGRESS | Cafe 포토 저장 At " + LocalDateTime.now() +
-                " | 카페 이름 = " + findById(cafeId) + " | 파일명 = " + photo.getFileName());
-        Cafe cafe = findById(cafeId);
+                " | 카페 이름 = " + findOneById(cafeId) + " | 파일명 = " + photo.getFileName());
+        Cafe cafe = cafeRepository.findById(cafeId).get();
         Photo savedPhoto = photoService.save(cafe.getCafeName(), cafe.getId(), photo.getFileName(), file);
         cafe.addPhoto(savedPhoto);
         cafeRepository.save(cafe);
@@ -96,11 +95,14 @@ public class CafeService {
     }
 
     @Transactional
-    public Long saveOpeningHours(Long cafeId, String dayOfTheWeek, String openingHours) {
+    public Long saveOpeningHours(Long cafeId, String monday, String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday) {
+
         log.info("IN PROGRESS | Cafe 영업시간 저장 At " + LocalDateTime.now() +
-                " | 카페 이름 = " + findById(cafeId));
+                " | 카페 이름 = " + findOneById(cafeId));
         Cafe cafe = cafeRepository.findById(cafeId).get();
-        cafe.addOpeningHours(dayOfTheWeek, openingHours);
+        OpeningHours openingHours = openingHoursService.save(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+
+        cafe.addOpeningHours(openingHours);
         cafeRepository.save(cafe);
         log.info("COMPLETE | Cafe 영업시간 저장 At " + LocalDateTime.now() + " | 카페 이름 = " + cafe.getCafeName());
         return cafe.getId();
@@ -112,13 +114,16 @@ public class CafeService {
     @Transactional
     public void updateCafe(Long cafeId, CafeSaveRequestDto cafeSaveRequestDto) {
         log.info("IN PROGRESS | Cafe 업데이트 At " + LocalDateTime.now() +
-                " | 카페 이름 = " + findById(cafeId).getCafeName());
+                " | 카페 이름 = " + findOneById(cafeId).getCafeName());
         Cafe cafe = cafeRepository.findById(cafeId).get();
 
         Float[] coordinate = coordinateFromAddress(cafe.getLocation());
 
-        cafe.updateLongitude(coordinate[0]);
-        cafe.updateLatitude(coordinate[1]);
+        Float longitude = coordinate[0];
+        Float latitude = coordinate[1];
+
+        cafe.updateLongitude(longitude);
+        cafe.updateLatitude(latitude);
         cafe.updateCafeName(cafeSaveRequestDto.getCafeName());
         cafe.updatePlugStatus(cafeSaveRequestDto.getPlugStatus());
         cafe.updateLocation(cafeSaveRequestDto.getLocation());
@@ -128,20 +133,26 @@ public class CafeService {
 
     @Transactional
     public void updateCafeDeletePhoto(Long cafeId, String fileName) {
+
         log.info("IN PROGRESS | Cafe 포토 삭제 At " + LocalDateTime.now() +
-                " | 카페 이름 = " + findById(cafeId).getCafeName());
+                " | 카페 이름 = " + findOneById(cafeId).getCafeName());
         Cafe cafe = cafeRepository.findById(cafeId).get();
-        // TODO: delete 수정
         photoService.delete(cafe.getCafeName(), cafeId, fileName);
         log.info("COMPLETE | Cafe 포토 삭제 At " + LocalDateTime.now());
     }
 
     @Transactional
-    public void updateCafeDeleteOpeningHours(Long cafeId, String dayOfTheWeek, String openingHour) {
+    public void updateCafeOpeningHours(Long cafeId, String monday, String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday) {
+        OpeningHours openingHours = cafeRepository.findById(cafeId).get().getOpeningHours();
+        openingHoursService.updateOpeningHours(openingHours.getId(), monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+    }
+
+    @Transactional
+    public void updateCafeDeleteOpeningHours(Long cafeId) {
 
         Cafe cafe = cafeRepository.findById(cafeId).get();
-        Map<String, String> openingHours = cafe.getOpeningHours();
-        openingHours.put(dayOfTheWeek, openingHour);
+        Long operatingHoursId = cafe.getOpeningHours().getId();
+        openingHoursService.deleteOpeningHours(operatingHoursId);
     }
 
     /**
@@ -150,8 +161,8 @@ public class CafeService {
     @Transactional
     public void deleteCafe(Long cafeId) {
         log.info("IN PROGRESS | Cafe 삭제 At " + LocalDateTime.now() +
-                " | 카페 이름 = " + findById(cafeId));
-        cafeRepository.delete(findById(cafeId));
+                " | 카페 이름 = " + findOneById(cafeId));
+        cafeRepository.delete(cafeRepository.findById(cafeId).get());
         log.info("COMPLETE | Cafe 삭제 At " + LocalDateTime.now() + " | 카페 아이디 = " + cafeId);
     }
 

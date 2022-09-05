@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.*;
@@ -23,10 +22,6 @@ public class Cafe extends BaseTimeEntity {
     private String cafeName; // 카페이름
     private String location; // 위치
 
-    @Column
-    @ElementCollection(targetClass=String.class)
-    private Map<String,String> openingHours = new HashMap<>(); // 영업시간 <요일, 오픈시간-마감시간>
-
     private Float latitude; // 위도
     private Float longitude; // 경도
 
@@ -34,6 +29,10 @@ public class Cafe extends BaseTimeEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cafe")
     private List<Photo> photos = new ArrayList<Photo>(); // 카페 사진들
+
+    @OneToOne
+    @JoinColumn(name="opening_hours_id")
+    private OpeningHours openingHours;
 
     @Builder
     public Cafe(String cafeName, String location,
@@ -49,8 +48,9 @@ public class Cafe extends BaseTimeEntity {
     public void addPhoto(Photo photo) {
         photos.add(photo);
     }
-    public void addOpeningHours(String dayOfTheWeek, String openingHours) {
-        this.openingHours.put(dayOfTheWeek, openingHours);
+
+    public void addOpeningHours(OpeningHours openingHours) {
+        this.openingHours = openingHours;
     }
 
     /**
@@ -75,10 +75,6 @@ public class Cafe extends BaseTimeEntity {
 
     public void updatePlugStatus(String plugStatus) {
         this.plugStatus = plugStatus;
-    }
-
-    public void updateOpeningHours(String dayOfTheWeek, String openingHours) {
-        this.openingHours.put(dayOfTheWeek, openingHours);
     }
 
     public void updatePhoto(Photo photo) {
