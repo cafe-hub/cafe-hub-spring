@@ -20,9 +20,4 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
                          @Param("bottomRightLatitude") Float bottomRightLatitude,
                          @Param("topLeftLongitude") Float topLeftLongitude,
                          @Param("bottomRightLongitude") Float bottomRightLongitude);
-
-    @Query(value = "SELECT c.openingHours" +
-            "FROM Cafe c",
-            nativeQuery = true)
-    OpeningHours findOpeningHoursByCafe();
 }
