@@ -23,7 +23,7 @@ public class Photo extends BaseTimeEntity {
     private String url;
 
     @ManyToOne
-    @JoinColumn(name = "cafe_cafe_id")
+    @JoinColumn(name = "cafe_id")
     private Cafe cafe;
 
     public void setCafe(Cafe cafe) {
