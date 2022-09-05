@@ -47,7 +47,7 @@ public class CafeService {
      * 카페 저장
      */
     @Transactional
-    public Long save(String cafeName, String location, String latitude, String longitude, String plugStatus) {
+    public Long save(String cafeName, String location, Float latitude, Float longitude, String plugStatus) {
 
         log.info("IN PROGRESS | Cafe 저장 At " + LocalDateTime.now() +
                 " | 카페 이름 = " + cafeName);
@@ -106,8 +106,8 @@ public class CafeService {
 
         Float[] coordinate = coordinateFromAddress(cafe.getLocation());
 
-        String longitude = coordinate[0].toString();
-        String latitude = coordinate[1].toString();
+        Float longitude = coordinate[0];
+        Float latitude = coordinate[1];
 
         cafe.updateLatitude(latitude);
         cafe.updateLongitude(longitude);
