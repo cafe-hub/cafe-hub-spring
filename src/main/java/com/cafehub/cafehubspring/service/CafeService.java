@@ -10,6 +10,7 @@ import kong.unirest.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,8 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -41,6 +44,16 @@ public class CafeService {
     public Cafe findById(Long cafeId) {
 
         return cafeRepository.findById(cafeId).get();
+    }
+
+    /**
+     * 카페 여러 건 조회
+     */
+    public List<Cafe> findCafesByCoordinates(Float topLeftLongitude, Float topLeftLatitude, Float bottomRightLongitude, Float bottomRightLatitude) {
+
+        List<Cafe> findCafes = cafeRepository.findCafesByCoordinates(topLeftLatitude, bottomRightLatitude, topLeftLongitude, bottomRightLongitude);
+
+        return findCafes;
     }
 
     /**
@@ -106,11 +119,8 @@ public class CafeService {
 
         Float[] coordinate = coordinateFromAddress(cafe.getLocation());
 
-        Float longitude = coordinate[0];
-        Float latitude = coordinate[1];
-
-        cafe.updateLatitude(latitude);
-        cafe.updateLongitude(longitude);
+        cafe.updateLongitude(coordinate[0]);
+        cafe.updateLatitude(coordinate[1]);
         cafe.updateCafeName(cafeSaveRequestDto.getCafeName());
         cafe.updatePlugStatus(cafeSaveRequestDto.getPlugStatus());
         cafe.updateLocation(cafeSaveRequestDto.getLocation());
@@ -124,7 +134,7 @@ public class CafeService {
                 " | 카페 이름 = " + findById(cafeId).getCafeName());
         Cafe cafe = cafeRepository.findById(cafeId).get();
         // TODO: delete 수정
-        photoService.delete(cafe.getCafeName(), fileName);
+        photoService.delete(cafe.getCafeName(), cafeId, fileName);
         log.info("COMPLETE | Cafe 포토 삭제 At " + LocalDateTime.now());
     }
 
