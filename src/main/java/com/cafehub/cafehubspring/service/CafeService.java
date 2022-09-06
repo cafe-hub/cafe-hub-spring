@@ -3,7 +3,6 @@ package com.cafehub.cafehubspring.service;
 import com.cafehub.cafehubspring.domain.Cafe;
 import com.cafehub.cafehubspring.domain.OpeningHours;
 import com.cafehub.cafehubspring.domain.Photo;
-import com.cafehub.cafehubspring.dto.CafeSaveRequestDto;
 import com.cafehub.cafehubspring.exception.http.InternalServerErrorException;
 import com.cafehub.cafehubspring.exception.http.NotAcceptableException;
 import com.cafehub.cafehubspring.exception.http.NotFoundException;
