@@ -1,7 +1,6 @@
 package com.cafehub.cafehubspring.repository;
 
 import com.cafehub.cafehubspring.domain.Cafe;
-import com.cafehub.cafehubspring.domain.OpeningHours;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

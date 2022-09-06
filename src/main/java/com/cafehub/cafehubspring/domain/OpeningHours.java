@@ -1,5 +1,6 @@
 package com.cafehub.cafehubspring.domain;
 
+import com.cafehub.cafehubspring.common.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OpeningHours {
+public class OpeningHours extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -25,12 +26,14 @@ public class OpeningHours {
     private String saturday;
     private String sunday;
 
-    @OneToOne(mappedBy = "openingHours")
+    @OneToOne
+    @JoinColumn(name="cafe_id")
     private Cafe cafe;
 
     @Builder
-    public OpeningHours(String monday, String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday) {
+    public OpeningHours(Cafe cafe, String monday, String tuesday, String wednesday, String thursday, String friday, String saturday, String sunday) {
 
+        this.cafe = cafe;
         this.monday = monday;
         this.tuesday = tuesday;
         this.wednesday = wednesday;

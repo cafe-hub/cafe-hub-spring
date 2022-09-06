@@ -16,7 +16,7 @@ public class Cafe extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
-    @Column(name="cafe_id")
+    @Column(name = "cafe_id")
     private Long id;
 
     private String cafeName; // 카페이름
@@ -30,27 +30,17 @@ public class Cafe extends BaseTimeEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cafe")
     private List<Photo> photos = new ArrayList<Photo>(); // 카페 사진들
 
-    @OneToOne
-    @JoinColumn(name="opening_hours_id")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "cafe")
     private OpeningHours openingHours;
 
     @Builder
-    public Cafe(String cafeName, String location,
-                Float latitude, Float longitude, String plugStatus) {
+    public Cafe(String cafeName, String location, Float latitude, Float longitude, String plugStatus) {
 
         this.cafeName = cafeName;
         this.location = location;
         this.latitude = latitude;
         this.longitude = longitude;
         this.plugStatus = plugStatus;
-    }
-
-    public void addPhoto(Photo photo) {
-        photos.add(photo);
-    }
-
-    public void addOpeningHours(OpeningHours openingHours) {
-        this.openingHours = openingHours;
     }
 
     /**
@@ -77,8 +67,12 @@ public class Cafe extends BaseTimeEntity {
         this.plugStatus = plugStatus;
     }
 
-    public void updatePhoto(Photo photo) {
+    public void addPhoto(Photo photo) {
         photos.add(photo);
+    }
+
+    public void updateOpeningHours(OpeningHours openingHours) {
+        this.openingHours = openingHours;
     }
 
 }

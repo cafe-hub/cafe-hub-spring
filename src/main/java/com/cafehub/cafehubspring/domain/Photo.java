@@ -16,7 +16,7 @@ public class Photo extends BaseTimeEntity {
     @Id
     @GeneratedValue
     @Column(name = "photo_id")
-    private String id;
+    private Long id;
 
     private String fileName;
 
@@ -26,14 +26,11 @@ public class Photo extends BaseTimeEntity {
     @JoinColumn(name = "cafe_id")
     private Cafe cafe;
 
-    public void setCafe(Cafe cafe) {
-        this.cafe = cafe;
-    }
-
     @Builder
-    public Photo(String fileName, String url) {
+    public Photo(String fileName, String url, Cafe cafe) {
         this.fileName = fileName;
         this.url = url;
+        this.cafe = cafe;
     }
 
     public void updateFileName(String fileName) {
