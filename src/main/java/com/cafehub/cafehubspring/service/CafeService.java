@@ -22,6 +22,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -80,10 +81,10 @@ public class CafeService {
 
         log.info("IN PROGRESS | Cafe 저장 At " + LocalDateTime.now() + " | " + cafeName);
 
-        Float[] coordinate = coordinateFromAddress(location);
+        Double[] coordinate = coordinateFromAddress(location);
 
-        Float longitude = coordinate[0];
-        Float latitude = coordinate[1];
+        Double longitude = coordinate[0];
+        Double latitude = coordinate[1];
 
         Cafe cafe = Cafe.builder()
                 .cafeName(cafeName)
@@ -193,10 +194,10 @@ public class CafeService {
         log.info("IN PROGRESS | Cafe 업데이트 At " + LocalDateTime.now() + " | " + cafeId);
         Cafe foundCafe = findOneById(cafeId);
 
-        Float[] coordinate = coordinateFromAddress(location);
+        Double[] coordinate = coordinateFromAddress(location);
 
-        Float longitude = coordinate[0];
-        Float latitude = coordinate[1];
+        Double longitude = coordinate[0];
+        Double latitude = coordinate[1];
 
         foundCafe.updateLongitude(longitude);
         foundCafe.updateLatitude(latitude);
@@ -298,9 +299,9 @@ public class CafeService {
      * y좌표, 즉 경도, 위도의 값을 추출하여 반환한다. 이 과정 중 예외 발생시 500(Internal Server Error)을 던진다. 만약 잘못된 주소 입력으로 인해
      * 반환 값을 받지 못하게 된다면 406(Not Acceptable)을 던진다.
      */
-    public Float[] coordinateFromAddress (String roadFullAddress) {
+    public Double[] coordinateFromAddress (String roadFullAddress) {
         log.info("IN PROGRESS | 주소로부터 좌표값 At " + LocalDateTime.now() + " | " + roadFullAddress);
-        Float[] coordinate = new Float[2];
+        Double[] coordinate = new Double[2];
 
         String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json";
         String jsonString;
@@ -331,8 +332,18 @@ public class CafeService {
             JSONObject documentsObject = jsonArray.getJSONObject(0);
             String longitude = documentsObject.getString("x");
             String latitude = documentsObject.getString("y");
-            coordinate[0] = Float.parseFloat(longitude);
-            coordinate[1] = Float.parseFloat(latitude);
+            DecimalFormat sevenDecimalFormat = new DecimalFormat("#.#######");
+
+            coordinate[0] = Double.parseDouble(
+                    sevenDecimalFormat.format(
+                            Double.parseDouble(longitude)
+                    )
+            );
+            coordinate[1] = Double.parseDouble(
+                    sevenDecimalFormat.format(
+                            Double.parseDouble(latitude)
+                    )
+            );
         } catch (Exception e) {
             throw new InternalServerErrorException(e);
         }
