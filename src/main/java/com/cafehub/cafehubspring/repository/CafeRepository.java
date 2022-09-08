@@ -12,8 +12,8 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
 
     Optional<Cafe> findByCafeName(String cafeName);
 
-    @Query(value = "SELECT c FROM Cafe c WHERE c.latitude < topLeftLatitude AND c.latitude > bottomRightLatitude " +
-                    "AND c.longitude > topLeftLongitude AND c.longitude < bottomRightLongitude",
+    @Query(value = "SELECT c FROM Cafe c WHERE c.latitude < :topLeftLatitude AND c.latitude > :bottomRightLatitude " +
+                    "AND c.longitude > :topLeftLongitude AND c.longitude < :bottomRightLongitude",
             nativeQuery = true)
     List<Cafe> findCafesByCoordinates(@Param("topLeftLatitude") Float topLeftLatitude,
                          @Param("bottomRightLatitude") Float bottomRightLatitude,
