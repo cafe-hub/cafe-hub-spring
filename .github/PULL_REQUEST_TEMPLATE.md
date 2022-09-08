@@ -1,11 +1,3 @@
----
-name: Pull Request Template
-about: Utilize this template when creating a pull request
-title: '[] '
-labels: ''
-assignees: ''
----
-
 ## 📋 이슈 번호
 - close #
   </br>

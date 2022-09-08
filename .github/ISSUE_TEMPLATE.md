@@ -1,11 +1,3 @@
----
-name: Issue Template
-about: Utilize this template when creating an issue
-title: '[] '
-labels: ''
-assignees: ''
----
-
 ## 📋 이슈 내용
 - 
   </br>
