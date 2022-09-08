@@ -3,6 +3,7 @@ package com.cafehub.cafehubspring.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.cafehub.cafehubspring.domain.Cafe;
 import com.cafehub.cafehubspring.domain.Photo;
 import com.cafehub.cafehubspring.exception.http.InternalServerErrorException;
 import com.cafehub.cafehubspring.exception.http.NotFoundException;
@@ -39,13 +40,13 @@ public class PhotoService {
      * 사진을 S3에 저장한 후에 디비에 관련 정보를 입력한다. 저장 중 오류가 발생하면 500(Internal Server Error)을 던진다.
      */
     @Transactional
-    public Photo save(String cafeName, Long cafeId, String fileName, MultipartFile file) {
+    public Photo save(Cafe cafe, String fileName, MultipartFile file) {
         log.info("IN PROGRESS | Photo 저장 At " + LocalDateTime.now() +
-                " | 카페 이름 = " + cafeName + " | 카페 아이디 = " + cafeId.toString() + " | 파일명 = " + fileName);
-        String folderName = cafeName + "-" + cafeId.toString();
+                " | 카페 아이디 = "  + cafe.getId() + " 파일명 = " + fileName);
+        String folderName = cafe.getCafeName() + "-" + cafe.getId();
         String url = insertFileToS3(folderName, fileName, file);
         try {
-            Photo photo = Photo.builder().fileName(fileName).url(url).build();
+            Photo photo = Photo.builder().fileName(fileName).url(url).cafe(cafe).build();
             Photo savedPhoto = photoRepository.save(photo);
             log.info("COMPLETE | Photo 저장 At " + LocalDateTime.now() + " | " + savedPhoto);
             return savedPhoto;
@@ -95,9 +96,9 @@ public class PhotoService {
      * 데이터를 삭제하는 과정에서 오류가 발생하면 500(Internal Server Error)을 던진다.
      */
     @Transactional
-    public void delete(String cafeName, Long cafeId, String fileName) {
+    public void delete(Cafe cafe, String fileName) {
         log.info("IN PROGRESS | Photo 삭제 At " + LocalDateTime.now());
-        String folderName = cafeName + "-" + cafeId.toString();
+        String folderName = cafe.getCafeName() + "-" + cafe.getId();
         deleteFileFromS3(folderName, fileName);
         Optional<Photo> foundPhoto = photoRepository.findByFileName(fileName);
         if (foundPhoto.isEmpty()) {

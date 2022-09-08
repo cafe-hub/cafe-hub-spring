@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.*;
@@ -17,15 +16,11 @@ public class Cafe extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
-    @Column(name="cafe_id")
+    @Column(name = "cafe_id")
     private Long id;
 
     private String cafeName; // 카페이름
     private String location; // 위치
-
-    @Column
-    @ElementCollection(targetClass=String.class)
-    private Map<String,String> openingHours = new HashMap<>(); // 영업시간 <요일, 오픈시간-마감시간>
 
     private Float latitude; // 위도
     private Float longitude; // 경도
@@ -35,22 +30,17 @@ public class Cafe extends BaseTimeEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cafe")
     private List<Photo> photos = new ArrayList<Photo>(); // 카페 사진들
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "cafe")
+    private OpeningHours openingHours;
+
     @Builder
-    public Cafe(String cafeName, String location,
-                Float latitude, Float longitude, String plugStatus) {
+    public Cafe(String cafeName, String location, Float latitude, Float longitude, String plugStatus) {
 
         this.cafeName = cafeName;
         this.location = location;
         this.latitude = latitude;
         this.longitude = longitude;
         this.plugStatus = plugStatus;
-    }
-
-    public void addPhoto(Photo photo) {
-        photos.add(photo);
-    }
-    public void addOpeningHours(String dayOfTheWeek, String openingHours) {
-        this.openingHours.put(dayOfTheWeek, openingHours);
     }
 
     /**
@@ -77,12 +67,12 @@ public class Cafe extends BaseTimeEntity {
         this.plugStatus = plugStatus;
     }
 
-    public void updateOpeningHours(String dayOfTheWeek, String openingHours) {
-        this.openingHours.put(dayOfTheWeek, openingHours);
+    public void addPhoto(Photo photo) {
+        photos.add(photo);
     }
 
-    public void updatePhoto(Photo photo) {
-        photos.add(photo);
+    public void updateOpeningHours(OpeningHours openingHours) {
+        this.openingHours = openingHours;
     }
 
 }

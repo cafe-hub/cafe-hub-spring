@@ -1,6 +1,7 @@
 package com.cafehub.cafehubspring.exception;
 
 import com.cafehub.cafehubspring.exception.http.InternalServerErrorException;
+import com.cafehub.cafehubspring.exception.http.NotAcceptableException;
 import com.cafehub.cafehubspring.exception.http.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -92,6 +93,28 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("ERROR | " + responseMessage + " At " + timestamp + " | " + exception);
 
         return ResponseEntity.status(status).body(
+                DefaultExceptionResponseDto.builder()
+                        .responseCode(responseCode)
+                        .responseMessage(responseMessage)
+                        .build()
+        );
+    }
+
+    /**
+     * 406 Not Acceptable |
+     * 서버 주도 콘텐츠 협상을 수행한 후, 사용자 에이전트에서 정해준 규격에 따른 어떠한 콘텐츠도 찾지 않습니다.
+     */
+    @ExceptionHandler(NotAcceptableException.class)
+    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
+    public ResponseEntity<Object> handleNotAcceptableException(NotAcceptableException exception) {
+        String responseMessage = exception.getMessage();
+        String responseCode = "NOT_ACCEPTABLE";
+        LocalDateTime timestamp = LocalDateTime.now();
+
+        log.error("ERROR | " + responseMessage + " At " + timestamp + " | "
+                + exception.getMessage() + " = " + exception.getCause());
+
+        return ResponseEntity.status(406).body(
                 DefaultExceptionResponseDto.builder()
                         .responseCode(responseCode)
                         .responseMessage(responseMessage)
