@@ -25,11 +25,13 @@ public class SwaggerConfiguration {
         return new Docket(DocumentationType.OAS_30)
                 .useDefaultResponseMessages(false) // Swagger에서 제공해주는 기본 응답 코드 (200, 401, 403, 404). false로 설정하면 기본 응답 코드를 노출하지 않습니다.
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.baeldung.swaggerconf.controller")) // Basic error controller 를 없애기 위한 코드
+                .apis(RequestHandlerSelectors.basePackage("com.cafehub.cafehubspring.controller")) // Basic error controller 를 없애기 위한 코드
                 .apis(RequestHandlerSelectors.any()) // Swagger를 적용할 패키지 설정
                 .paths(PathSelectors.any()) // Swagger를 적용할 주소 패턴을 세팅
-                .build();
+                .build()
+                .apiInfo(apiInfo()); // Swagger UI 로 노출할 정보
     }
+
 
     /**
      * api 정보 설정 부분
