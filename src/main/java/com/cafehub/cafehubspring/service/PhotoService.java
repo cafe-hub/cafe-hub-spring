@@ -68,6 +68,7 @@ public class PhotoService {
 
             amazonS3Client.putObject(new PutObjectRequest(bucketName, uploadingFileName, convertedFile)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
+            convertedFile.delete();
             String url = amazonS3Client.getUrl(bucketName, uploadingFileName).toString();
             log.info("COMPLETE | S3에 파일 저장 At " + LocalDateTime.now() + " | " + url);
             return url;
