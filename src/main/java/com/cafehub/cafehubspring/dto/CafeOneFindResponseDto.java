@@ -1,13 +1,9 @@
 package com.cafehub.cafehubspring.dto;
 
 import com.cafehub.cafehubspring.domain.Cafe;
-import com.cafehub.cafehubspring.domain.OpeningHours;
-import com.cafehub.cafehubspring.domain.Photo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
-
-import java.util.List;
 
 @Getter
 @ApiModel(value = "Cafe 단건 조회 응답")
