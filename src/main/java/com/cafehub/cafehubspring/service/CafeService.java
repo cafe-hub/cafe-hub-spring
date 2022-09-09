@@ -25,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static java.lang.Integer.parseInt;
@@ -47,10 +48,14 @@ public class CafeService {
      * 카페를 식별자를 통해 조회합니다.
      */
     public Cafe findOneById(Long cafeId) {
+        log.info("START | Cafe 단건 조회 AT " + LocalDateTime.now() + " | " + cafeId);
+
         Optional<Cafe> foundCafe = cafeRepository.findById(cafeId);
         if (foundCafe.isEmpty()) {
-            throw new NotFoundException("카페 정보를 찾을 수 없습니다");
+            throw new NotFoundException("카페 정보를 찾을 수 없습니다.");
         }
+
+        log.info("COMPLETE | Cafe 단건 조회 AT " + LocalDateTime.now() + " | " + foundCafe.get().getCafeName());
 
         return foundCafe.get();
     }
