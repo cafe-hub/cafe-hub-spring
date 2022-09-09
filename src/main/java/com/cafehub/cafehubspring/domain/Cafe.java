@@ -21,9 +21,8 @@ public class Cafe extends BaseTimeEntity {
 
     private String cafeName; // 카페이름
     private String location; // 위치
-
-    private Float latitude; // 위도
-    private Float longitude; // 경도
+    private Double latitude; // 위도
+    private Double longitude; // 경도
 
     private String plugStatus; // 콘센트 상태 [null, many]
 
@@ -34,7 +33,7 @@ public class Cafe extends BaseTimeEntity {
     private OpeningHours openingHours;
 
     @Builder
-    public Cafe(String cafeName, String location, Float latitude, Float longitude, String plugStatus) {
+    public Cafe(String cafeName, String location, Double latitude, Double longitude, String plugStatus) {
 
         this.cafeName = cafeName;
         this.location = location;
@@ -55,11 +54,11 @@ public class Cafe extends BaseTimeEntity {
         this.location = location;
     }
 
-    public void updateLatitude(Float latitude) {
+    public void updateLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public void updateLongitude(Float longitude) {
+    public void updateLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
