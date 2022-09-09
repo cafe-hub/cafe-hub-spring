@@ -73,6 +73,15 @@ public class CafeService {
     }
 
     /**
+     * Cafe 전체 조회 |
+     * 현재 디비에 있는 모든 카페 데이터들을 조회한다.
+     */
+    public List<Cafe> findAll() {
+
+        return cafeRepository.findAll();
+    }
+
+    /**
      * Cafe 저장 |
      * 카페를 저장합니다. 저장 중 디비에서 에러가 발생하면 500(Internal Server Error)을 던진다.
      */
@@ -128,7 +137,7 @@ public class CafeService {
     }
 
     /**
-     * 파일 번호 부여
+     * 파일 번호 부여 |
      * 현재 매핑되어 있는 사진들의 파일 이름을 확인하여 가장 마지막으로 부여한 번호에 1을 더하여 리턴합니다. 이 번호는 다음 파일 번호를 부여하는데 사용됩니다.
      */
     private int fileNumbering(List<Photo> photos) {
@@ -210,7 +219,7 @@ public class CafeService {
     }
 
     /**
-     * Cafe 사진 삭제
+     * Cafe 사진 삭제 |
      * 카페 식별자를 통해 관련된 카페 정보를 조회하여 카페 사진을 삭제한다.
      */
     @Transactional
@@ -269,7 +278,7 @@ public class CafeService {
     }
 
     /**
-     * Cafe 삭제
+     * Cafe 삭제 |
      * 카페 식별자를 통해 관련된 카페 정보를 조회하여 관련된 카페 운영시간, 사진, 정보를 삭제한다.
      */
     @Transactional
