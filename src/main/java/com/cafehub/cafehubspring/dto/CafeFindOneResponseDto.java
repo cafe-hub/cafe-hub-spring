@@ -12,8 +12,6 @@ import java.util.List;
 
 @Getter
 @ApiModel(value = "Cafe 단건 조회 응답")
-@Builder
-@AllArgsConstructor
 public class CafeFindOneResponseDto {
 
     @ApiModelProperty(position = 1, required = true, value = "식별자")
