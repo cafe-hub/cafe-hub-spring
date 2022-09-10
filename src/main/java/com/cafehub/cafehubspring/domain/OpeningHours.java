@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class OpeningHours extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="opening_hours_id")
     private Long id;
 
