@@ -68,12 +68,14 @@ public class CafeService {
                                             Double bottomRightLongitude,
                                             Double bottomRightLatitude) {
 
-        return cafeRepository.findCafesByCoordinates(
+        List<Cafe> cafesByCoordinates = cafeRepository.findCafesByCoordinates(
                 topLeftLatitude,
                 bottomRightLatitude,
                 topLeftLongitude,
                 bottomRightLongitude
         );
+
+        return cafesByCoordinates;
     }
 
     /**

@@ -2,6 +2,8 @@ package com.cafehub.cafehubspring.controller;
 
 import com.cafehub.cafehubspring.common.DefaultResponseDto;
 import com.cafehub.cafehubspring.domain.Cafe;
+import com.cafehub.cafehubspring.dto.CafeFindManyRequestDto;
+import com.cafehub.cafehubspring.dto.CafeFindManyResponseDto;
 import com.cafehub.cafehubspring.dto.CafeFindOneResponseDto;
 import com.cafehub.cafehubspring.service.CafeService;
 import io.swagger.annotations.Api;
@@ -11,6 +13,10 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Api(tags = "Cafe API")
 @RestController
@@ -44,4 +50,56 @@ public class CafeController {
 
     }
 
+    /**
+     * 카페 여러 건 조회
+     */
+    @ApiOperation(value = "Cafe 여러 건 조회", notes = "특정한 범위 내에서 조회되는 카페들을 반환합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message= "카페 여러 건 조회 완료"),
+            @ApiResponse(code = 200, message= "조회되는 카페가 없습니다."),
+            @ApiResponse(code = 400, message= "Top-Left Longitude를 입력해 주세요."),
+            @ApiResponse(code = 400, message= "Top-Left Latitude 입력해 주세요."),
+            @ApiResponse(code = 400, message= "Bottom-Right Longitude를 입력해 주세요."),
+            @ApiResponse(code = 400, message= "Bottom-Right Longitude를 입력해 주세요.")
+
+    })
+    @PostMapping("/cafes")
+    public ResponseEntity<DefaultResponseDto<Object>> cafeMany(
+            @RequestBody @Valid CafeFindManyRequestDto request
+            ) {
+
+        List<Cafe> foundCafes = cafeService.findManyByCoordinates(
+                request.getTopLeftLongitude(),
+                request.getTopLeftLatitude(),
+                request.getBottomRightLongitude(),
+                request.getBottomRightLatitude());
+
+        if(foundCafes.isEmpty()) {
+            return ResponseEntity.status(200)
+                    .body(DefaultResponseDto.builder()
+                            .responseCode("NO_CONTENT")
+                            .responseMessage("조회되는 카페가 없습니다.")
+                            .build());
+        }
+
+        List<CafeFindManyResponseDto> response = new ArrayList<>();
+
+        for(Cafe cafe : foundCafes) {
+            CafeFindManyResponseDto cafeOneDto = CafeFindManyResponseDto.builder()
+                    .id(cafe.getId())
+                    .latitude(cafe.getLatitude())
+                    .longitude(cafe.getLongitude())
+                    .build();
+
+            response.add(cafeOneDto);
+        }
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("OK")
+                        .responseMessage("카페 여러 건 조회 완료")
+                        .data(response)
+                        .build());
+
+    }
 }
