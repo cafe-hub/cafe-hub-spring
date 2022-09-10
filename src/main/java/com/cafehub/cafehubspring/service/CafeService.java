@@ -47,10 +47,14 @@ public class CafeService {
      * 카페를 식별자를 통해 조회합니다.
      */
     public Cafe findOneById(Long cafeId) {
+        log.info("START | Cafe 단건 조회 AT " + LocalDateTime.now() + " | " + cafeId);
+
         Optional<Cafe> foundCafe = cafeRepository.findById(cafeId);
         if (foundCafe.isEmpty()) {
-            throw new NotFoundException("카페 정보를 찾을 수 없습니다");
+            throw new NotFoundException("카페 정보를 찾을 수 없습니다.");
         }
+
+        log.info("COMPLETE | Cafe 단건 조회 AT " + LocalDateTime.now() + " | " + foundCafe.get().getCafeName());
 
         return foundCafe.get();
     }
@@ -59,10 +63,10 @@ public class CafeService {
      * Cafe 여러 건 조회 |
      * 왼쪽 상단의 위도, 경도와 오른쪽 하단의 위도, 경도를 통해서 위도, 경도의 좌표값 안에 위치한 카페들을 조회한다.
      */
-    public List<Cafe> findManyByCoordinates(Float topLeftLongitude,
-                                            Float topLeftLatitude,
-                                            Float bottomRightLongitude,
-                                            Float bottomRightLatitude) {
+    public List<Cafe> findManyByCoordinates(Double topLeftLongitude,
+                                            Double topLeftLatitude,
+                                            Double bottomRightLongitude,
+                                            Double bottomRightLatitude) {
 
         return cafeRepository.findCafesByCoordinates(
                 topLeftLatitude,
