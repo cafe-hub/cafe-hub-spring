@@ -63,10 +63,10 @@ public class CafeService {
      * Cafe 여러 건 조회 |
      * 왼쪽 상단의 위도, 경도와 오른쪽 하단의 위도, 경도를 통해서 위도, 경도의 좌표값 안에 위치한 카페들을 조회한다.
      */
-    public List<Cafe> findManyByCoordinates(Float topLeftLongitude,
-                                            Float topLeftLatitude,
-                                            Float bottomRightLongitude,
-                                            Float bottomRightLatitude) {
+    public List<Cafe> findManyByCoordinates(Double topLeftLongitude,
+                                            Double topLeftLatitude,
+                                            Double bottomRightLongitude,
+                                            Double bottomRightLatitude) {
 
         return cafeRepository.findCafesByCoordinates(
                 topLeftLatitude,

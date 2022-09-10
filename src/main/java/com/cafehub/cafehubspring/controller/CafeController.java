@@ -2,7 +2,7 @@ package com.cafehub.cafehubspring.controller;
 
 import com.cafehub.cafehubspring.common.DefaultResponseDto;
 import com.cafehub.cafehubspring.domain.Cafe;
-import com.cafehub.cafehubspring.dto.CafeOneFindResponseDto;
+import com.cafehub.cafehubspring.dto.CafeFindOneResponseDto;
 import com.cafehub.cafehubspring.service.CafeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +33,7 @@ public class CafeController {
     ) {
 
         Cafe cafe = cafeService.findOneById(id);
-        CafeOneFindResponseDto response = new CafeOneFindResponseDto(cafe);
+        CafeFindOneResponseDto response = new CafeFindOneResponseDto(cafe);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
