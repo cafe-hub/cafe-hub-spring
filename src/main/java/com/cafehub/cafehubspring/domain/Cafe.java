@@ -15,7 +15,7 @@ import java.util.*;
 public class Cafe extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cafe_id")
     private Long id;
 
