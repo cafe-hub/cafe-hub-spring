@@ -22,7 +22,7 @@ public class CafeFindManyRequestDto {
     @ApiModelProperty(position = 3, required = true, dataType = "Double", value = "오른쪽 하단 Longitude", example = "127.06")
     private Double bottomRightLongitude;
 
-    @NotNull(message = "Bottom-Right Longitude를 입력해 주세요.")
+    @NotNull(message = "Bottom-Right Latitude를 입력해 주세요.")
     @ApiModelProperty(position = 4, required = true, dataType = "Double", value = "오른쪽 하단 Latitude", example = "37.4")
     private Double bottomRightLatitude;
 

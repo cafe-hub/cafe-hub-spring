@@ -56,12 +56,8 @@ public class CafeController {
     @ApiOperation(value = "Cafe 여러 건 조회", notes = "특정한 범위 내에서 조회되는 카페들을 반환합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message= "카페 여러 건 조회 완료"),
-            @ApiResponse(code = 200, message= "조회되는 카페가 없습니다."),
-            @ApiResponse(code = 400, message= "Top-Left Longitude를 입력해 주세요."),
-            @ApiResponse(code = 400, message= "Top-Left Latitude 입력해 주세요."),
-            @ApiResponse(code = 400, message= "Bottom-Right Longitude를 입력해 주세요."),
-            @ApiResponse(code = 400, message= "Bottom-Right Longitude를 입력해 주세요.")
-
+            @ApiResponse(code = 204, message= "조회되는 카페가 없습니다."),
+            @ApiResponse(code = 400, message= "정보를 입력해 주세요."),
     })
     @PostMapping("/cafes")
     public ResponseEntity<DefaultResponseDto<Object>> cafeMany(
@@ -75,7 +71,7 @@ public class CafeController {
                 request.getBottomRightLatitude());
 
         if(foundCafes.isEmpty()) {
-            return ResponseEntity.status(200)
+            return ResponseEntity.status(204)
                     .body(DefaultResponseDto.builder()
                             .responseCode("NO_CONTENT")
                             .responseMessage("조회되는 카페가 없습니다.")
