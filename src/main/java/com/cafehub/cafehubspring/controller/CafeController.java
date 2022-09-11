@@ -2,7 +2,6 @@ package com.cafehub.cafehubspring.controller;
 
 import com.cafehub.cafehubspring.common.DefaultResponseDto;
 import com.cafehub.cafehubspring.domain.Cafe;
-import com.cafehub.cafehubspring.dto.CafeFindManyRequestDto;
 import com.cafehub.cafehubspring.dto.CafeFindManyResponseDto;
 import com.cafehub.cafehubspring.dto.CafeFindOneResponseDto;
 import com.cafehub.cafehubspring.service.CafeService;
@@ -34,9 +33,7 @@ public class CafeController {
             @ApiResponse(code = 404, message = "카페 정보를 찾을 수 없습니다."),
     })
     @GetMapping("/cafe/{id}")
-    public ResponseEntity<DefaultResponseDto<Object>> cafeOne(
-            @PathVariable Long id
-    ) {
+    public ResponseEntity<DefaultResponseDto<Object>> cafeOne(@PathVariable Long id) {
 
         Cafe cafe = cafeService.findOneById(id);
         CafeFindOneResponseDto response = new CafeFindOneResponseDto(cafe);
@@ -59,16 +56,19 @@ public class CafeController {
             @ApiResponse(code = 204, message= "조회되는 카페가 없습니다."),
             @ApiResponse(code = 400, message= "정보를 입력해 주세요."),
     })
-    @PostMapping("/cafes")
+    @GetMapping("/cafes/{topLeftLongitude}/{topLeftLatitude}/{bottomRightLongitude}/{bottomRightLatitude}")
     public ResponseEntity<DefaultResponseDto<Object>> cafeMany(
-            @RequestBody @Valid CafeFindManyRequestDto request
+            @PathVariable Double topLeftLongitude,
+            @PathVariable Double topLeftLatitude,
+            @PathVariable Double bottomRightLongitude,
+            @PathVariable Double bottomRightLatitude
             ) {
 
-        List<Cafe> foundCafes = cafeService.findManyByCoordinates(
-                request.getTopLeftLongitude(),
-                request.getTopLeftLatitude(),
-                request.getBottomRightLongitude(),
-                request.getBottomRightLatitude());
+        List<Cafe> foundCafes =
+                cafeService.findManyByCoordinates(topLeftLongitude,
+                        topLeftLatitude,
+                        bottomRightLongitude,
+                        bottomRightLatitude);
 
         if(foundCafes.isEmpty()) {
             return ResponseEntity.status(204)
