@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -46,7 +47,7 @@ public class CafeFindOneResponseDto {
     private String sunday;
 
     @ApiModelProperty(position = 12, value = "포토 url")
-    private List<String> photoUrl;
+    private List<String> photoUrl = new ArrayList<String>();
 
     public CafeFindOneResponseDto(Cafe cafe) {
         this.id = cafe.getId();

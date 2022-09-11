@@ -33,9 +33,7 @@ public class CafeController {
             @ApiResponse(code = 404, message = "카페 정보를 찾을 수 없습니다."),
     })
     @GetMapping("/cafe/{id}")
-    public ResponseEntity<DefaultResponseDto<Object>> cafeOne(
-            @PathVariable Long id
-    ) {
+    public ResponseEntity<DefaultResponseDto<Object>> cafeOne(@PathVariable Long id) {
 
         Cafe cafe = cafeService.findOneById(id);
         CafeFindOneResponseDto response = new CafeFindOneResponseDto(cafe);
