@@ -20,6 +20,7 @@ public class Photo extends BaseTimeEntity {
 
     private String fileName;
 
+    @Column(length = 1000)
     private String url;
 
     @ManyToOne

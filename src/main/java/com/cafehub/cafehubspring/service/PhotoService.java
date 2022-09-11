@@ -56,6 +56,26 @@ public class PhotoService {
     }
 
     /**
+     * Photo 주입 |
+     * 사진을 S3에 주입한 후에 디비에 관련 정보를 입력한다. 저장 중 오류가 발생하면 500(Internal Server Error)을 던진다.
+     */
+    @Transactional
+    public Photo inject(Cafe cafe, String fileName, File file) {
+        log.info("IN PROGRESS | Photo 주입 At " + LocalDateTime.now() +
+                " | 카페 아이디 = "  + cafe.getId() + " 파일명 = " + fileName);
+        String folderName = cafe.getCafeName() + "-" + cafe.getId();
+        String url = injectFileToS3(folderName, fileName, file);
+        try {
+            Photo photo = Photo.builder().fileName(fileName).url(url).cafe(cafe).build();
+            Photo injectedPhoto = photoRepository.save(photo);
+            log.info("COMPLETE | Photo 저장 At " + LocalDateTime.now() + " | " + injectedPhoto.getId());
+            return injectedPhoto;
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Photo 주입 중 에러 발생", e);
+        }
+    }
+
+    /**
      * S3에 파일 저장 |
      * 파일을 전환하고 특정 파일 관련된 폴더에 파일을 저장하고 URL을 반환한다. 파일 전환시 오류가 발생하면 500(Internal Server Error)을 던진다.
      */
@@ -74,6 +94,27 @@ public class PhotoService {
             return url;
         } catch (IOException e) {
             throw new InternalServerErrorException("Photo insertFileToS3 중 에러 발생", e);
+        }
+    }
+
+    /**
+     * S3에 파일 주입 |
+     * 특정 파일 관련된 폴더에 파일을 주입하고 URL을 반환한다.
+     */
+    private String injectFileToS3(String folderName, String fileName, File file) {
+        log.info("IN PROGRESS | S3에 파일 주입 At " + LocalDateTime.now() +
+                " | 폴더명 = " + folderName + " | 파일명 = " + fileName);
+
+        try {
+            String uploadingFileName = folderName + "/" + fileName;
+
+            amazonS3Client.putObject(new PutObjectRequest(bucketName, uploadingFileName, file)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+            String url = amazonS3Client.getUrl(bucketName, uploadingFileName).toString();
+            log.info("COMPLETE | S3에 파일 주입 At " + LocalDateTime.now() + " | " + url);
+            return url;
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Photo injectFileToS3 중 에러 발생", e);
         }
     }
 
