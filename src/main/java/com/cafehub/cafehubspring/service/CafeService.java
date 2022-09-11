@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -140,6 +141,26 @@ public class CafeService {
         log.info("COMPLETE | Cafe 이미지 저장 At " + LocalDateTime.now() + " | " + foundCafe.getPhotos().size());
 
         return foundCafe.getId();
+    }
+
+    /**
+     * Cafe 사진 주입 |
+     * 카페 사진을 주입한다. 식별자를 통한 카페 조회 중 에러가 발생하면 404(Not Found)을 던진다. 저장할 파일이 존재 한다면 파일 이름을 부여하여 차례대로
+     * 저장한다.
+     */
+    @Transactional
+    public Long injectPhoto(Long cafeId, File photo) {
+        log.info("IN PROGRESS | Cafe 포토 주입 At " + LocalDateTime.now() + " | " + cafeId);
+        Cafe foundCafe = findOneById(cafeId);
+
+        int index = fileNumbering(foundCafe.getPhotos());
+        String fileName = foundCafe.getCafeName() + "_" + index + ".png";
+        Photo injectedPhoto = photoService.inject(foundCafe, fileName, photo);
+        foundCafe.addPhoto(injectedPhoto);
+
+        log.info("COMPLETE | Cafe 이미지 주입 At " + LocalDateTime.now() + " | " + foundCafe.getPhotos().size());
+
+        return injectedPhoto.getId();
     }
 
     /**
