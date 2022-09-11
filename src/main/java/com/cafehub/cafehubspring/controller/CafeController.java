@@ -59,7 +59,7 @@ public class CafeController {
             @ApiResponse(code = 204, message= "조회되는 카페가 없습니다."),
             @ApiResponse(code = 400, message= "정보를 입력해 주세요."),
     })
-    @PostMapping("/cafes")
+    @GetMapping("/cafes")
     public ResponseEntity<DefaultResponseDto<Object>> cafeMany(
             @RequestBody @Valid CafeFindManyRequestDto request
             ) {
