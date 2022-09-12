@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CafeRepository extends JpaRepository<Cafe, Long> {
 
-    @Query(value = "SELECT * FROM Cafe c WHERE c.latitude < :topLeftLatitude AND c.latitude > :bottomRightLatitude " +
+    @Query(value = "SELECT * FROM cafe c WHERE c.latitude < :topLeftLatitude AND c.latitude > :bottomRightLatitude " +
                     "AND c.longitude > :topLeftLongitude AND c.longitude < :bottomRightLongitude",
             nativeQuery = true)
     List<Cafe> findCafesByCoordinates(@Param("topLeftLatitude") Double topLeftLatitude,
