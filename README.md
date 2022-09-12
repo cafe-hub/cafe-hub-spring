@@ -49,6 +49,12 @@ Play Store:
 
 ---
 
+## CI/CD Pipeline
+
+![CI/CD Pipeline Diagram](doc/img/cicd-pipeline-diagram.png)
+
+---
+
 ## Cooperation
 - [Git Flow](https://techblog.woowahan.com/2553/)
 - [Commit Convention](https://doublesprogramming.tistory.com/256)
