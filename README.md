@@ -39,13 +39,13 @@ Play Store:
 
 ## [API Documentation](https://cafehub-dev.nogamsung.com/swagger-ui/index.html)
 
-#### [API 문서 관련 설명](./doc/api_document_explanation.md)
+#### [API 문서 관련 설명](doc/api_document_explanation.md)
 
 ---
 
 ## Architecture
 
-![Architecture Diagram](./doc/architecture-diagram.png)
+![Architecture Diagram](doc/img/architecture-diagram.png)
 
 ---
 
@@ -69,7 +69,7 @@ Play Store:
 
 | 사진 | 이름 | 깃허브 |
 | :-: | :-: | :-: |
-| <img src="./doc/img/gs97ahn.png" alt="gs97ahn" width=150 height=150> | 안검성 | [gs97ahn](github.com/gs97ahn) |
-| <img src="./doc/img/nahyeon99.png" alt="gs97ahn" width=150 height=150> | 김나현 | [nahyeon99](github.com/nahyeon99) |
+| <img src="doc/img/gs97ahn.png" alt="gs97ahn" width=150 height=150> | 안검성 | [gs97ahn](github.com/gs97ahn) |
+| <img src="doc/img/nahyeon99.png" alt="gs97ahn" width=150 height=150> | 김나현 | [nahyeon99](github.com/nahyeon99) |
 
 </div>
