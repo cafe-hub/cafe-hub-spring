@@ -22,37 +22,45 @@ public class CafeFindOneResponseDto {
     @ApiModelProperty(position = 3, required = true, value = "카페 위치")
     private String location;
 
-    @ApiModelProperty(position = 4, value = "콘센트 상태")
+    @ApiModelProperty(position = 4, required = true, value = "위도")
+    private Double latitude;
+
+    @ApiModelProperty(position = 5, required = true, value = "경도")
+    private Double longitude;
+
+    @ApiModelProperty(position = 6, value = "콘센트 상태")
     private String plugStatus;
 
-    @ApiModelProperty(position = 5, value = "영업시간 월요일")
+    @ApiModelProperty(position = 7, value = "영업시간 월요일")
     private String monday;
 
-    @ApiModelProperty(position = 6, value = "영업시간 화요일")
+    @ApiModelProperty(position = 8, value = "영업시간 화요일")
     private String tuesday;
 
-    @ApiModelProperty(position = 7, value = "영업시간 수요일")
+    @ApiModelProperty(position = 9, value = "영업시간 수요일")
     private String wednesday;
 
-    @ApiModelProperty(position = 8, value = "영업시간 목요일")
+    @ApiModelProperty(position = 10, value = "영업시간 목요일")
     private String thursday;
 
-    @ApiModelProperty(position = 9, value = "영업시간 금요일")
+    @ApiModelProperty(position = 11, value = "영업시간 금요일")
     private String friday;
 
-    @ApiModelProperty(position = 10, value = "영업시간 토요일")
+    @ApiModelProperty(position = 12, value = "영업시간 토요일")
     private String saturday;
 
-    @ApiModelProperty(position = 11, value = "영업시간 일요일")
+    @ApiModelProperty(position = 13, value = "영업시간 일요일")
     private String sunday;
 
-    @ApiModelProperty(position = 12, value = "포토 url")
+    @ApiModelProperty(position = 14, value = "포토 url")
     private List<String> photoUrl = new ArrayList<String>();
 
     public CafeFindOneResponseDto(Cafe cafe) {
         this.id = cafe.getId();
         this.cafeName = cafe.getCafeName();
         this.location = cafe.getLocation();
+        this.latitude = cafe.getLatitude();
+        this.longitude = cafe.getLongitude();
         this.plugStatus = cafe.getPlugStatus();
 
         this.monday = cafe.getOpeningHours().getMonday();
