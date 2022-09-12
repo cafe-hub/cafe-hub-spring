@@ -23,9 +23,10 @@ Play Store:
 [![Github Issues Closed](https://img.shields.io/github/issues-closed/susanghan/cafehub-spring?logo=GitHub&style=flat)](https://github.com/susanghan/cafehub-spring/issues?q=is%3Aissue+is%3Aclosed)
 [![Github Pull Request Opened](https://img.shields.io/github/issues-pr/susanghan/cafehub-spring?logo=Github&style=flat)](https://github.com/susanghan/cafehub-spring/pulls)
 [![Github Pull Request Closed](https://img.shields.io/github/issues-pr-closed/susanghan/cafehub-spring?logo=Github&style=flat)](https://github.com/susanghan/cafehub-spring/pulls?q=is%3Apr+is%3Aclosed)
+
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 ![Develop-CI](https://img.shields.io/github/workflow/status/susanghan/cafehub-spring/Develop%20-%20CI?&logo=GitHub-Actions&label=develop-ci&style=flat)
 ![Master-CI](https://img.shields.io/github/workflow/status/susanghan/cafehub-spring/Master%20-%20CI?&logo=GitHub-Actions&label=master-ci&style=flat)
-
 
 </div>
 
