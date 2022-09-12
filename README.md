@@ -4,7 +4,7 @@
 
 ![cafehub-logo](doc/img/cafehub-logo.png)
 
-코딩하기 좋은카페, 카페허브
+### 코딩하기 좋은 카페를 모아두다, Cafehub
 
 App Store: 
 
@@ -24,23 +24,47 @@ Play Store:
 [![Github Pull Request Opened](https://img.shields.io/github/issues-pr/susanghan/cafehub-spring?logo=Github&style=flat)](https://github.com/susanghan/cafehub-spring/pulls)
 [![Github Pull Request Closed](https://img.shields.io/github/issues-pr-closed/susanghan/cafehub-spring?logo=Github&style=flat)](https://github.com/susanghan/cafehub-spring/pulls?q=is%3Apr+is%3Aclosed)
 ![Develop-CI](https://img.shields.io/github/workflow/status/susanghan/cafehub-spring/Develop%20-%20CI?&logo=GitHub-Actions&label=develop-ci&style=flat)
+![Master-CI](https://img.shields.io/github/workflow/status/susanghan/cafehub-spring/Master%20-%20CI?&logo=GitHub-Actions&label=master-ci&style=flat)
+
 
 </div>
 
-## Database
+---
+
+## Database ERD
 
 ![Database Diagram](doc/img/database-diagram.png)
+
+---
 
 ## [API Documentation](https://cafehub-dev.nogamsung.com/swagger-ui/index.html)
 
 #### [API 문서 관련 설명](./doc/api_document_explanation.md)
 
+---
+
+## Architecture
+
+![Architecture Diagram](./doc/architecture-diagram.png)
+
+---
+
 ## Cooperation
 - [Git Flow](https://techblog.woowahan.com/2553/)
 - [Commit Convention](https://doublesprogramming.tistory.com/256)
 - [Github Issue & Pull Request](https://velog.io/@junh0328/%ED%98%91%EC%97%85%EC%9D%84-%EC%9C%84%ED%95%9C-%EA%B9%83%ED%97%88%EB%B8%8C-%EC%9D%B4%EC%8A%88-%EC%9E%91%EC%84%B1%ED%95%98%EA%B8%B0)
+- [Semantic Versioning](https://semver.org/lang/ko/)
+
+---
+
+## Repository Link
+
+- [Flutter](https://github.com/susanghan/cafehub-flutter)
+
+---
 
 ## Contributors
+
 <div align="center">
 
 | 사진 | 이름 | 깃허브 |
