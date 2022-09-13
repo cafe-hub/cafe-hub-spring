@@ -1,5 +1,6 @@
 package com.cafehub.cafehubspring.controller;
 
+import com.cafehub.cafehubspring.common.DefaultResponseDto;
 import com.cafehub.cafehubspring.domain.Cafe;
 import com.cafehub.cafehubspring.dto.CafeDefaultResponseDto;
 import com.cafehub.cafehubspring.service.CafeService;
@@ -9,7 +10,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
