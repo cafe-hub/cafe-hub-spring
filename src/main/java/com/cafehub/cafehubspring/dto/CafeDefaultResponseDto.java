@@ -1,6 +1,7 @@
 package com.cafehub.cafehubspring.dto;
 
 import com.cafehub.cafehubspring.domain.Cafe;
+import com.cafehub.cafehubspring.domain.OpeningHours;
 import com.cafehub.cafehubspring.domain.Photo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@ApiModel(value = "Cafe 단건 조회 응답")
-public class CafeFindOneResponseDto {
+@ApiModel(value = "Cafe 응답")
+public class CafeDefaultResponseDto {
 
     @ApiModelProperty(position = 1, required = true, value = "식별자")
     private Long id;
@@ -55,7 +56,7 @@ public class CafeFindOneResponseDto {
     @ApiModelProperty(position = 14, value = "포토 url")
     private List<String> photoUrl = new ArrayList<String>();
 
-    public CafeFindOneResponseDto(Cafe cafe) {
+    public CafeDefaultResponseDto(Cafe cafe) {
         this.id = cafe.getId();
         this.cafeName = cafe.getCafeName();
         this.location = cafe.getLocation();
@@ -75,4 +76,5 @@ public class CafeFindOneResponseDto {
             this.photoUrl.add(photo.getUrl());
         }
     }
+
 }
