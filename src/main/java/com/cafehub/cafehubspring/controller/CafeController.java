@@ -25,6 +25,29 @@ public class CafeController {
     private final CafeService cafeService;
 
     /**
+     * 카페 단건 조회
+     */
+    @ApiOperation(value = "Cafe 단건 조회", notes = "파라미터로 cafe id를 받고, 카페 data를 응답합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message= "Cafe 단건 조회 완료"),
+            @ApiResponse(code = 404, message = "카페 정보를 찾을 수 없습니다."),
+    })
+    @GetMapping("/cafe/{id}")
+    public ResponseEntity<DefaultResponseDto<Object>> cafeOne(@PathVariable Long id) {
+
+        Cafe cafe = cafeService.findOneById(id);
+        CafeDefaultResponseDto response = new CafeDefaultResponseDto(cafe);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("OK")
+                        .responseMessage("카페 단건조회 완료")
+                        .data(response)
+                        .build());
+
+    }
+
+    /**
      * 카페 여러 건 조회
      */
     @ApiOperation(value = "Cafe 여러 건 조회", notes = "특정한 범위 내에서 조회되는 카페들을 반환합니다.")
