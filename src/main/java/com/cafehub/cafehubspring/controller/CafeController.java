@@ -2,8 +2,7 @@ package com.cafehub.cafehubspring.controller;
 
 import com.cafehub.cafehubspring.common.DefaultResponseDto;
 import com.cafehub.cafehubspring.domain.Cafe;
-import com.cafehub.cafehubspring.dto.CafeFindManyResponseDto;
-import com.cafehub.cafehubspring.dto.CafeFindOneResponseDto;
+import com.cafehub.cafehubspring.dto.CafeDefaultResponseDto;
 import com.cafehub.cafehubspring.service.CafeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,9 +10,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class CafeController {
     public ResponseEntity<DefaultResponseDto<Object>> cafeOne(@PathVariable Long id) {
 
         Cafe cafe = cafeService.findOneById(id);
-        CafeFindOneResponseDto response = new CafeFindOneResponseDto(cafe);
+        CafeDefaultResponseDto response = new CafeDefaultResponseDto(cafe);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -62,7 +62,7 @@ public class CafeController {
             @PathVariable Double topLeftLatitude,
             @PathVariable Double bottomRightLongitude,
             @PathVariable Double bottomRightLatitude
-            ) {
+    ) {
 
         List<Cafe> foundCafes =
                 cafeService.findManyByCoordinates(topLeftLongitude,
@@ -78,15 +78,10 @@ public class CafeController {
                             .build());
         }
 
-        List<CafeFindManyResponseDto> response = new ArrayList<>();
+        List<CafeDefaultResponseDto> response = new ArrayList<>();
 
         for(Cafe cafe : foundCafes) {
-            CafeFindManyResponseDto cafeOneDto = CafeFindManyResponseDto.builder()
-                    .id(cafe.getId())
-                    .latitude(cafe.getLatitude())
-                    .longitude(cafe.getLongitude())
-                    .build();
-
+            CafeDefaultResponseDto cafeOneDto = new CafeDefaultResponseDto(cafe);
             response.add(cafeOneDto);
         }
 
