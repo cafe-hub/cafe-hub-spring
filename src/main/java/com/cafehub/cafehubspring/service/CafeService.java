@@ -48,7 +48,7 @@ public class CafeService {
      * 카페를 식별자를 통해 조회합니다.
      */
     public Cafe findOneById(Long cafeId) {
-        log.info("START | Cafe 단건 조회 AT " + LocalDateTime.now() + " | " + cafeId);
+        log.info("IN PROGRESS | Cafe 단건 조회 AT " + LocalDateTime.now() + " | " + cafeId);
 
         Optional<Cafe> foundCafe = cafeRepository.findById(cafeId);
         if (foundCafe.isEmpty()) {
