@@ -29,8 +29,8 @@ public class CafeController {
      */
     @ApiOperation(value = "Cafe 단건 조회", notes = "파라미터로 cafe id를 받고, 카페 data를 응답합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message= "Cafe 단건 조회 완료"),
-            @ApiResponse(code = 404, message = "카페 정보를 찾을 수 없습니다."),
+            @ApiResponse(code = 200, message= "카페 단건 조회 완료"),
+            @ApiResponse(code = 404, message = "카페 정보를 찾을 수 없습니다"),
     })
     @GetMapping("/cafe/{id}")
     public ResponseEntity<DefaultResponseDto<Object>> cafeOne(@PathVariable Long id) {
@@ -53,8 +53,8 @@ public class CafeController {
     @ApiOperation(value = "Cafe 여러 건 조회", notes = "특정한 범위 내에서 조회되는 카페들을 반환합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message= "카페 여러 건 조회 완료"),
-            @ApiResponse(code = 204, message= "조회되는 카페가 없습니다."),
-            @ApiResponse(code = 400, message= "정보를 입력해 주세요."),
+            @ApiResponse(code = 204, message= "조회되는 카페가 없습니다"),
+            @ApiResponse(code = 400, message= "정보를 입력해 주세요"),
     })
     @GetMapping("/cafes/{topLeftLongitude}/{topLeftLatitude}/{bottomRightLongitude}/{bottomRightLatitude}")
     public ResponseEntity<DefaultResponseDto<Object>> cafeMany(
@@ -74,7 +74,7 @@ public class CafeController {
             return ResponseEntity.status(204)
                     .body(DefaultResponseDto.builder()
                             .responseCode("NO_CONTENT")
-                            .responseMessage("조회되는 카페가 없습니다.")
+                            .responseMessage("조회되는 카페가 없습니다")
                             .build());
         }
 
