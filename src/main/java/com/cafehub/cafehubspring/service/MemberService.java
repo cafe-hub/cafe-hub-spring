@@ -29,6 +29,7 @@ public class MemberService {
 
         Optional<Member> foundMember = memberRepository.findByUuid(uuid);
         if (foundMember.isPresent()) {
+            foundMember.get().updateUpdatedAt(LocalDateTime.now());
             return null;
         }
 

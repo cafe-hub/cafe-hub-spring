@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -23,5 +24,9 @@ public class Member extends BaseTimeEntity {
     public Member(String uuid) {
 
         this.uuid = uuid;
+    }
+
+    public void updateUpdatedAt(LocalDateTime updatedAt) {
+        this.setUpdatedAt(updatedAt);
     }
 }
