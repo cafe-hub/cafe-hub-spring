@@ -7,11 +7,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = "Member API")
@@ -30,7 +29,7 @@ public class MemberController {
             @ApiResponse(code = 201, message = "회원 생성 완료"),
             @ApiResponse(code = 500, message = "회원 등록 중 에러가 발생했습니다")
     })
-    @GetMapping("/member/{uuid}")
+    @PostMapping("/member/{uuid}")
     public ResponseEntity<DefaultResponseDto<Object>> register(@PathVariable String uuid) {
 
         Member member = memberService.save(uuid);

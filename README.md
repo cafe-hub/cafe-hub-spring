@@ -6,9 +6,9 @@
 
 ### 코딩하기 좋은 카페를 모아두다, Cafehub
 
-App Store: 
+App Store: [cafehub](https://play.google.com/store/apps/details?id=com.susanghan.cafehub)
 
-Play Store:
+Play Store: [카페허브](https://apps.apple.com/kr/app/%EC%B9%B4%ED%8E%98%ED%97%88%EB%B8%8C/id6443638607)
 
 ![Java](https://img.shields.io/badge/Java-11.0.11-6db33f?logo=Java&style=flat)
 ![SpringBoot](https://img.shields.io/badge/SpringBoot-2.5.0-6db33f?logo=Spring-Boot&style=flat)
@@ -16,7 +16,6 @@ Play Store:
 [![Swagger](https://img.shields.io/badge/Swagger-cafehub-6db33f?logo=Swagger&style=flat)](https://cafehub-dev.nogamsung.com/swagger-ui/index.html)
 
 ![MySQL](https://img.shields.io/badge/MySQL-8.0.30-003545?logo=mysql&style=flat)
-![EC2](https://img.shields.io/badge/EC2-t2.micro-003545?logo=Amazon-EC2&style=flat)
 ![S3](https://img.shields.io/badge/S3--003545?logo=Amazon-S3&style=flat)
 
 [![Github Issues Opened](https://img.shields.io/github/issues/susanghan/cafehub-spring?logo=GitHub&style=flat)](https://github.com/susanghan/cafehub-spring/issues)
