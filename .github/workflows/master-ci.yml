@@ -40,7 +40,7 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
           image: gs97ahn/server
-          tags: cafehub-master-latest, cafehub-1.0.0
+          tags: cafehub-master-latest, cafehub-1.0.1
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
